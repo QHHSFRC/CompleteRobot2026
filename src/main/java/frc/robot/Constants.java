@@ -54,7 +54,6 @@ public final class Constants {
     public static class IntakeArmConstants {
         public static final DCMotor dcMotor = DCMotor.getNeoVortex(2);
         public static final int canIDMaster = 3;
-        public static final int canIDFollower = 4;
         public static final double kP = 1; 
         public static final double kI = 0;
         public static final double kD = 0;
@@ -79,7 +78,8 @@ public final class Constants {
 
     public static class IntakeRollerConstants {
         public static final DCMotor dcMotor = DCMotor.getNeoVortex(1);
-        public static final int canID = 5;
+        public static final int canID = 4;
+        public static final int canIDFollowerEAR = 5;
         public static final double gearRatio = 12;
         public static final boolean motorInverted = false;
         // Limits

@@ -7,6 +7,7 @@ package frc.robot.Subsystems;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeRollerConstants;
@@ -23,6 +24,7 @@ public class IntakeRollerSubsystem extends SubsystemBase {
 
   // THIS SUBSYSTEM REFERS TO THE MULTIPLE LONG WHITE ROLLERS
   private SparkFlex motorMaster;
+  private SparkFlex motorFollowerEndAffectorRoller;
 
   private SmartMotorControllerConfig smcConfig;
   private SmartMotorController smc;
@@ -31,6 +33,7 @@ public class IntakeRollerSubsystem extends SubsystemBase {
 
   public IntakeRollerSubsystem() {
     motorMaster = new SparkFlex(IntakeRollerConstants.canID, MotorType.kBrushless);
+    motorFollowerEndAffectorRoller = new SparkFlex(IntakeRollerConstants.canIDFollowerEAR, MotorType.kBrushless);
 
     smcConfig = new SmartMotorControllerConfig(this)
     .withControlMode(ControlMode.OPEN_LOOP)
@@ -38,7 +41,8 @@ public class IntakeRollerSubsystem extends SubsystemBase {
     .withGearing(IntakeRollerConstants.gearRatio)
     .withMotorInverted(IntakeRollerConstants.motorInverted)
     .withIdleMode(MotorMode.BRAKE)
-    .withStatorCurrentLimit(IntakeRollerConstants.statorCurrentLimit);
+    .withStatorCurrentLimit(IntakeRollerConstants.statorCurrentLimit)
+    .withFollowers(Pair.of(motorFollowerEndAffectorRoller, true));
 
     smc = new SparkWrapper(motorMaster, IntakeRollerConstants.dcMotor, smcConfig);
 

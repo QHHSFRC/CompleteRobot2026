@@ -42,7 +42,7 @@ public class IntakeArmSubsystem extends SubsystemBase {
   private SmartMotorControllerConfig smcConfig;
 
   private SparkFlex sparkMaster;
-  private SparkFlex sparkFollower;
+  
 
   private SmartMotorController sparkSmartMotorController;
 
@@ -56,7 +56,7 @@ public class IntakeArmSubsystem extends SubsystemBase {
     
 
     sparkMaster = new SparkFlex(IntakeArmConstants.canIDMaster, MotorType.kBrushless);
-    sparkFollower = new SparkFlex(IntakeArmConstants.canIDFollower, MotorType.kBrushless); // I believe the intake arm only has one motor not too, make sure to fix later if needed
+    
 
     smcConfig = new SmartMotorControllerConfig(this)
       .withControlMode(ControlMode.CLOSED_LOOP)
@@ -76,8 +76,7 @@ public class IntakeArmSubsystem extends SubsystemBase {
      .withMotorInverted(IntakeArmConstants.motorInverted)
      .withIdleMode(MotorMode.BRAKE)
      .withStatorCurrentLimit(IntakeArmConstants.statorCurrentLimit)
-     .withClosedLoopRampRate(Seconds.of(0.25))
-     .withFollowers(Pair.of(sparkFollower, true));
+     .withClosedLoopRampRate(Seconds.of(0.25));
 
     sparkSmartMotorController = new SparkWrapper(sparkMaster, IntakeArmConstants.dcMotor, smcConfig);
 
