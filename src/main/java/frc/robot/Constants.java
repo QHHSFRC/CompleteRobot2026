@@ -52,7 +52,7 @@ public final class Constants {
     }
 
     public static class IntakeArmConstants {
-        public static final DCMotor dcMotor = DCMotor.getNeoVortex(2);
+        public static final DCMotor dcMotor = DCMotor.getNeoVortex(1);
         public static final int canIDMaster = 3;
         public static final double kP = 1; 
         public static final double kI = 0;
