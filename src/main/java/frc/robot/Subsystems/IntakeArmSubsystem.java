@@ -16,7 +16,7 @@ import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkFlex;
 import yams.mechanisms.config.ArmConfig;
 import yams.mechanisms.positional.Arm;
 
@@ -40,7 +40,7 @@ import edu.wpi.first.units.measure.Angle;
 public class IntakeArmSubsystem extends SubsystemBase {
   private SmartMotorControllerConfig smcConfig;
 
-  private SparkMax spark;
+  private SparkFlex spark;
 
   private SmartMotorController sparkSmartMotorController;
 
@@ -55,10 +55,10 @@ public class IntakeArmSubsystem extends SubsystemBase {
   .withControlMode(ControlMode.CLOSED_LOOP)
   // Feedback Constants (PID Constants)
   .withClosedLoopController(IntakeArmConstants.kP, IntakeArmConstants.kI, IntakeArmConstants.kD, DegreesPerSecond.of(90), DegreesPerSecondPerSecond.of(45))
-  .withSimClosedLoopController(10, 0, 0, DegreesPerSecond.of(300), DegreesPerSecondPerSecond.of(300))
+  // .withSimClosedLoopController(0, 0, 0, DegreesPerSecond.of(300), DegreesPerSecondPerSecond.of(300))
   // Feedforward Constants
   .withFeedforward(new ArmFeedforward(IntakeArmConstants.kS, IntakeArmConstants.kG , IntakeArmConstants.kV))
-  .withSimFeedforward(new ArmFeedforward(0, 0, 0))
+  // .withSimFeedforward(new ArmFeedforward(0, 0, 0))
   // Telemetry name and verbosity level
   .withTelemetry("ArmMotor", TelemetryVerbosity.HIGH)
   // Gearing from the motor rotor to final shaft.
@@ -71,7 +71,7 @@ public class IntakeArmSubsystem extends SubsystemBase {
   .withStatorCurrentLimit(IntakeArmConstants.statorCurrentLimit)
   .withClosedLoopRampRate(Seconds.of(0.25));
 
-  spark = new SparkMax(4, MotorType.kBrushless);
+  spark = new SparkFlex(4, MotorType.kBrushless);
 
   sparkSmartMotorController = new SparkWrapper(spark, DCMotor.getNEO(1), smcConfig);
 

@@ -6,7 +6,6 @@ package frc.robot.Subsystems;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkFlex;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.Pair;
@@ -43,7 +42,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private SmartMotorControllerConfig smcConfig;
 
   // If you're using a sparkflex for the flywheel mechanism, use replace "SparkMax" with "SparkFlex" and import its dependency.
-  private SparkMax spark;
+  private SparkFlex spark;
 
 
   private SmartMotorController sparkSmartMotorController;
@@ -66,7 +65,7 @@ public class ShooterSubsystem extends SubsystemBase {
   .withIdleMode(MotorMode.COAST) 
   .withStatorCurrentLimit(TurretSubsystemConstants.statorCurrentLimit);
 
-  spark = new SparkMax(TurretSubsystemConstants.canID, MotorType.kBrushless);
+  spark = new SparkFlex(TurretSubsystemConstants.canID, MotorType.kBrushless);
 
   sparkSmartMotorController = new SparkWrapper(spark, TurretSubsystemConstants.dcMotor, smcConfig);
 
