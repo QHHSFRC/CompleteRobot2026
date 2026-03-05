@@ -62,7 +62,7 @@ public class RobotContainer {
 
     // Intake Rollers with Shooter Rollers
     m_OperatorController.button(5).whileTrue(m_intakeRollerSubsystem.feed(0.4).alongWith(m_shooterRollerSubsystem.feed(0.3)));
-    m_OperatorController.button(6).whileTrue(m_intakeRollerSubsystem.feed(-0.4));
+    m_OperatorController.button(6).whileTrue(m_intakeRollerSubsystem.feed(-0.4)); // ShooterRollerSub has negative softlimit of 0, so not included
 
 
 
