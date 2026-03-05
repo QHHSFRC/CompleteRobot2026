@@ -41,8 +41,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private SmartMotorControllerConfig smcConfig;
 
-  // If you're using a sparkflex for the flywheel mechanism, use replace "SparkMax" with "SparkFlex" and import its dependency.
-  private SparkFlex spark;
+  // If you're using a sparkflex for the flywheel mechanism, use replace "SparkMax" with "SparkFlex" and import its dependency. Also, I'm assuming the shooter subsystem contains two motors
+  private SparkFlex sparkMaster;
+  private SparkFlex sparkFollower;
 
 
   private SmartMotorController sparkSmartMotorController;
@@ -53,6 +54,10 @@ public class ShooterSubsystem extends SubsystemBase {
   private FlyWheel shooter;
 
   public ShooterSubsystem() {
+
+    sparkMaster = new SparkFlex(ShooterSubsystemConstants.canIDMaster, MotorType.kBrushless);
+    sparkFollower = new SparkFlex(ShooterSubsystemConstants.canIDFollower, MotorType.kBrushless);
+
     smcConfig = new SmartMotorControllerConfig(this)
   .withControlMode(ControlMode.CLOSED_LOOP)
   .withClosedLoopController(ShooterSubsystemConstants.kP, ShooterSubsystemConstants.kI, ShooterSubsystemConstants.kD, ShooterSubsystemConstants.maxVelocityRPM, ShooterSubsystemConstants.maxAccelerationRPM)
@@ -63,11 +68,11 @@ public class ShooterSubsystem extends SubsystemBase {
   .withGearing(ShooterSubsystemConstants.gearRatio)
   .withMotorInverted(false)
   .withIdleMode(MotorMode.COAST) 
-  .withStatorCurrentLimit(ShooterSubsystemConstants.statorCurrentLimit);
+  .withStatorCurrentLimit(ShooterSubsystemConstants.statorCurrentLimit)
+  .withFollowers(Pair.of(sparkFollower, true));
 
-  spark = new SparkFlex(ShooterSubsystemConstants.canID, MotorType.kBrushless);
 
-  sparkSmartMotorController = new SparkWrapper(spark, ShooterSubsystemConstants.dcMotor, smcConfig);
+  sparkSmartMotorController = new SparkWrapper(sparkMaster, ShooterSubsystemConstants.dcMotor, smcConfig);
 
   // These values aren't necessarily important for us, later on they may be.
   shooterConfig = new FlyWheelConfig(sparkSmartMotorController)

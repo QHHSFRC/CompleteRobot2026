@@ -32,14 +32,15 @@ public final class Constants {
     public static class ShooterSubsystemConstants {
         // Keep in mind this is for the MAIN FLYWHEEL
         public static final DCMotor dcMotor = DCMotor.getNeoVortex(1); // Don't worry about this
-        public static final double gearRatio = 12;
-        public static final int canID = 1; 
+        public static final int canIDMaster = 1;
+        public static final int canIDFollower = 2;
         public static final double kP = 1; // The actual value for P may be lower than 1
         public static final double kI = 0;
         public static final double kD = 0;
         public static final double kS = 0;
         public static final double kV = 0;
         public static final double kA = 0;
+        public static final double gearRatio = 12;
         // Limits
         public static final AngularVelocity maxVelocityRPM = RPM.of(5000);
         public static final AngularAcceleration maxAccelerationRPM = RotationsPerSecondPerSecond.of(2500);
@@ -55,7 +56,8 @@ public final class Constants {
 
     public static class IntakeArmConstants {
         public static final DCMotor dcMotor = DCMotor.getNeoVortex(1);
-        public static final int canID = 2;
+        public static final int canIDMaster = 3;
+        public static final int canIDFollower = 4;
         public static final double kP = 1; 
         public static final double kI = 0;
         public static final double kD = 0;
