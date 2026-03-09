@@ -53,9 +53,9 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getRawAxis(1), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRawAxis(0), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRawAxis(2), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true),
             m_robotDrive));
 
@@ -78,36 +78,58 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    // SHOOTER - Sets ONLY the shooter speed at various RPM's to score
-    // m_OperatorController.L2().whileTrue(m_shooterSubsystem.setVelocity(RPM.of(600))); // CounterClockwise - Reverse
-    // m_OperatorController.R2().whileTrue(m_shooterSubsystem.setVelocity(RPM.of(-300)));  // Clockwise - Shoots
+    /*
+     * Keep in mind, to utitlize the shooters full rpm you must allow it to reach the desired RPM.
+     * This is also true for the Indexer but it's not as slow as the shooter.
+     * Press R2() and allow the shooter to reach its RPM setpoint (takes about a second), 
+     * then use the Indexer button to cycle full up the shooter.
+     * 
+     * Also, because there isn't enough physical tolerance between the Indexer and plate inside the hopper, balls
+     * will somewhat struggle to pass thorugh especially if there are more than one. One fix is to use
+     * smaller wheels on the indexer, and removing one wheel. This WILL allow for a much smoother
+     * cycle since the ball doesn't have to fight the indexer so much.
+     * 
+     * If changing the wheels isn't an option, than you must simply bare with it.
+     * Unfortunately, there is nothing we can do on the programming side.
+     *  - Motors are controlled via dutycycle, reducing dutcycle reduces torque and speed so that won't help.
+     * 
+     * General tip: When using the Indexer to cycle fuel up the shooter, balls will get stuck.
+     * Simply dutycycle the Indexer in the CW or CCW direction a few times and balls will go through up to the shooter.
+     * 
+     * Once you understand this, delete the above comments if you'd like. 
+     */
 
-    // !!!!!!!! TIP: Spin the Shooter Roller ahead of time so it can build speed, then use the Index Roller to send up shooter.
-
-    // Intake Fuel - Sets the shooter (also the intake) Rollers to intake along with the Index Roller
-    // Negative RPM for Shooter will SHOOT the balls out. A positive RPM will move the balls back down the shooter.
-    m_OperatorController.L2()
-                        .whileTrue(m_shooterSubsystem.setVelocity(RPM.of(-3500)));
+    // Shoots the fuel - You can copy and paste the code below to set different buttons at different rpms. (Distances the shooter can shoot)
+    m_OperatorController.R2()
+                        .whileTrue(m_shooterSubsystem.setVelocity(RPM.of(-3500))); // Double check whether pos or neg direction shoots.
                                                       // .alongWith(m_indexRollerSubsystem.set(-0.9)));
 
-      // Cycle Fuel to Shooter
-      m_OperatorController.R2()
-                        .whileTrue(m_shooterSubsystem.setVelocity(RPM.of(-100)));
+    // Reverse the direction of the shooter - This WILL send balls back down and will most likely get stuck! 
+    m_OperatorController.L2()
+                        .whileTrue(m_shooterSubsystem.setVelocity(RPM.of(100)));
                                                       // .alongWith(m_indexRollerSubsystem.set(0.9)));
 
 
     // Test whether the positive or negative dutycycle rotates the index CW or CCW
-    m_OperatorController.button(3).whileTrue(m_indexRollerSubsystem.set(0.8)); // Positive Intake
-    m_OperatorController.button(4).whileTrue(m_indexRollerSubsystem.set(-0.8));         // Negative reverse
+    m_OperatorController.button(1).whileTrue(m_indexRollerSubsystem.set(0.8)); // Positive Intake
+    m_OperatorController.button(2).whileTrue(m_indexRollerSubsystem.set(-0.8));         // Negative reverse
 
                                                       
     // When using the climb, if for any reason the robot isn't strong enough, check IRL mechanism. Or increase dutycycle but not over 1
+    // Dutycycle of 0.8 is recommended.
     // Climber - Climb Up/ Climb Down -> DRIVER CONTROLLER
-    m_driverController.button(3).whileTrue(m_climbSubsystem.set(0.8));
-    m_driverController.button(4).whileTrue(m_climbSubsystem.set(-0.8));
+    m_driverController.button(1).whileTrue(m_climbSubsystem.set(0.8));
+    m_driverController.button(2).whileTrue(m_climbSubsystem.set(-0.8));
+
+    m_driverController.button(3)
+            .whileTrue(
+              new RunCommand(()-> m_robotDrive.setX(), m_robotDrive));
+
+    m_driverController.button(4)
+            .onTrue(
+              new InstantCommand(()-> m_robotDrive.zeroHeading(), m_robotDrive));
 
     // ----------------------------------------------------------------------
-
 
 
     // INTAKE ARM - Sets the intake arm at various angles
@@ -127,16 +149,6 @@ public class RobotContainer {
     // Climber - Climb Up/ Climb Down -> Driver Controller
     // m_driverController.button(1).whileTrue(m_climbSubsystem.set(0.8));
     // m_driverController.button(2).whileTrue(m_climbSubsystem.set(-0.8));
-
-
-
-    m_driverController.button(6)
-            .whileTrue(
-              new RunCommand(()-> m_robotDrive.setX(), m_robotDrive));
-
-    m_driverController.button(7)
-            .onTrue(
-              new InstantCommand(()-> m_robotDrive.zeroHeading(), m_robotDrive));
 
   }
 
