@@ -40,9 +40,9 @@ public final class Constants {
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
 
     // Chassis configuration
-    public static final double kTrackWidth = Units.Meters.convertFrom(27, Inches);
+    public static final double kTrackWidth = Units.Meters.convertFrom(30, Inches);
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = Units.Meters.convertFrom(32.5, Inches);
+    public static final double kWheelBase = Units.Meters.convertFrom(30, Inches);
     // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
         new Translation2d(kWheelBase / 2, kTrackWidth / 2),

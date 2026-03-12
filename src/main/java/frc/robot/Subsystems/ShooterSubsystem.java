@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.Subsystems;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkFlex;
@@ -44,7 +44,6 @@ public class ShooterSubsystem extends SubsystemBase {
   // If you're using a sparkflex for the flywheel mechanism, use replace "SparkMax" with "SparkFlex" and import its dependency. Also, I'm assuming the shooter subsystem contains two motors
   private SparkFlex sparkMaster;
   private SparkFlex sparkFollower;
-
 
   private SmartMotorController sparkSmartMotorController;
 
