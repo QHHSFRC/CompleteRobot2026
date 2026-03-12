@@ -166,5 +166,8 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
+    // Or if you wish to select one specific auto, uncomment the line directly below this one. THE STRING MUST BE EXACT TO AUTO NAME IN PATHPLANNER
+    // return AutoBuilder.buildAuto("Example Auto");
+    // Then comment out autoChooser.getSelected()
   }
 }
