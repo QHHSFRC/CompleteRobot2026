@@ -15,10 +15,10 @@ import frc.robot.Constants.OperatorConstants;
 // import frc.robot.subsystems.IntakeArmSubsystem;
 // import frc.robot.subsystems.IntakeRollerSubsystem;
 // import frc.robot.subsystems.ShooterRollerSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.ClimbSubsystem;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.IndexRollerSubsystem;
+import frc.robot.Subsystems.ShooterSubsystem;
+import frc.robot.Subsystems.ClimbSubsystem;
+import frc.robot.Subsystems.DriveSubsystem;
+import frc.robot.Subsystems.IndexRollerSubsystem;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.RPM;
@@ -101,12 +101,12 @@ public class RobotContainer {
 
     // Shoots the fuel - You can copy and paste the code below to set different buttons at different rpms. (Distances the shooter can shoot)
     m_OperatorController.R2()
-                        .whileTrue(m_shooterSubsystem.setVelocity(RPM.of(-3500))); // Double check whether pos or neg direction shoots.
+                        .whileTrue(m_shooterSubsystem.setVelocity(RPM.of(-4000))); // Double check whether pos or neg direction shoots.
                                                       // .alongWith(m_indexRollerSubsystem.set(-0.9)));
 
     // Reverse the direction of the shooter - This WILL send balls back down and will most likely get stuck! 
     m_OperatorController.L2()
-                        .whileTrue(m_shooterSubsystem.setVelocity(RPM.of(100)));
+                        .whileTrue(m_shooterSubsystem.setVelocity(RPM.of(120)));
                                                       // .alongWith(m_indexRollerSubsystem.set(0.9)));
 
 
