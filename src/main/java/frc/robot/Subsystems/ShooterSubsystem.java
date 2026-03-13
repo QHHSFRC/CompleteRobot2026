@@ -45,7 +45,6 @@ public class ShooterSubsystem extends SubsystemBase {
   private SparkFlex sparkMaster;
   private SparkFlex sparkFollower;
 
-
   private SmartMotorController sparkSmartMotorController;
 
   private final FlyWheelConfig shooterConfig;

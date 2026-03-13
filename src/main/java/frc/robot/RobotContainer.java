@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
+import frc.robot.AutoCommands.AutoNamedCommands;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
 // import frc.robot.subsystems.IntakeArmSubsystem;
@@ -22,8 +23,12 @@ import frc.robot.Subsystems.IndexRollerSubsystem;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.RPM;
-
 import edu.wpi.first.math.MathUtil;
+
+// Pathplanner autobuilder imports
+import com.pathplanner.lib.auto.AutoBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class RobotContainer {
@@ -33,6 +38,8 @@ public class RobotContainer {
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
   private final IndexRollerSubsystem m_indexRollerSubsystem = new IndexRollerSubsystem();
+
+  private final SendableChooser<Command> autoChooser;
 
   //Dont use
   // private final IntakeArmSubsystem m_intakeArmSubsystem = new IntakeArmSubsystem();
@@ -53,9 +60,9 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRawAxis(1), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRawAxis(0), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRawAxis(2), OIConstants.kDriveDeadband),
                 true),
             m_robotDrive));
 
@@ -69,6 +76,11 @@ public class RobotContainer {
 
     // m_intakeArmSubsystem.setDefaultCommand(m_intakeArmSubsystem.setAngle(Degrees.of(0)));
     // m_intakeRollerSubsystem.setDefaultCommand(m_intakeRollerSubsystem.set(0));
+
+    AutoNamedCommands.register(m_robotDrive, m_shooterSubsystem, m_indexRollerSubsystem);
+
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", autoChooser);
     configureBindings();
 
 
@@ -153,6 +165,9 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return autoChooser.getSelected();
+    // Or if you wish to select one specific auto, uncomment the line directly below this one. THE STRING MUST BE EXACT TO AUTO NAME IN PATHPLANNER
+    // return AutoBuilder.buildAuto("Example Auto");
+    // Then comment out autoChooser.getSelected()
   }
 }
