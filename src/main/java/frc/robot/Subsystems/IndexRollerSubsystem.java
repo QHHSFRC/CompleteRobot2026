@@ -9,7 +9,11 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.networktables.BooleanPublisher;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IndexRollerConstants;
 import yams.mechanisms.config.FlyWheelConfig;
@@ -30,6 +34,18 @@ public class IndexRollerSubsystem extends SubsystemBase {
   private final FlyWheelConfig rollerConfig;
   private FlyWheel roller;
 
+  // Elastic
+  private double lastDutycycle = 0.0;
+  private final BooleanPublisher forwardPublisher =
+    NetworkTableInstance.getDefault()
+                        .getBooleanTopic("/Elastic/IndexerIntakeFuel")
+                        .publish();
+
+  private final BooleanPublisher reversePublisher =
+    NetworkTableInstance.getDefault()
+                        .getBooleanTopic("/Elastic/IndexerOutakeFuel")
+                        .publish();
+
   public IndexRollerSubsystem() {
     cimMotor = new SparkFlex(IndexRollerConstants.canID, MotorType.kBrushed);
 
@@ -49,12 +65,29 @@ public class IndexRollerSubsystem extends SubsystemBase {
     roller = new FlyWheel(rollerConfig);
   }
 
+  // public Command set(double dutycycle) {
+  //   return runEnd(
+  //     ()-> {
+  //       lastDutycycle = dutycycle;
+  //       CommandScheduler.getInstance().schedule(roller.set(dutycycle));
+  //     },
+  //     ()-> {
+  //       lastDutycycle = 0.0;
+  //       CommandScheduler.getInstance().schedule(roller.set(0));
+  //     }
+  //   );
+
+  // }
+
   public Command set(double dutycycle) {
     return roller.set(dutycycle);
   }
 
+
   @Override
   public void periodic() {
     roller.updateTelemetry();
+    // forwardPublisher.set(lastDutycycle > 0);
+    // reversePublisher.set(lastDutycycle < 0);
   }
 }

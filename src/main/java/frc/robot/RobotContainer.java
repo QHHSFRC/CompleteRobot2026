@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -48,15 +49,34 @@ public class RobotContainer {
   public RobotContainer() {
 
     // Swerve
-    m_robotDrive.setDefaultCommand(
+    // m_robotDrive.setDefaultCommand(
+    //     // The left stick controls translation of the robot.
+    //     // Turning is controlled by the X axis of the right stick.
+    //     new RunCommand(
+    //         () -> m_robotDrive.drive(
+    //             -MathUtil.applyDeadband(m_driverController.getLeftY() * 0.75, OIConstants.kDriveDeadband),
+    //             -MathUtil.applyDeadband(m_driverController.getLeftX() * 0.75, OIConstants.kDriveDeadband),
+    //             -MathUtil.applyDeadband(m_driverController.getRightX() * 0.85, OIConstants.kDriveDeadband),
+    //             true),
+    //         m_robotDrive));
+
+        m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
-            () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
-                true),
+            () -> {
+              double x = MathUtil.applyDeadband(m_driverController.getLeftY() * 0.85, OIConstants.kDriveDeadband);
+              double y = -MathUtil.applyDeadband(m_driverController.getLeftX() * 0.85, OIConstants.kDriveDeadband);
+              double rot = MathUtil.applyDeadband(m_driverController.getRightX() * 0.85, OIConstants.kDriveDeadband);
+
+             /*  var alliance = DriverStation.getAlliance();
+              if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Blue) {
+                x = -x;
+                y = -y;
+              }*/
+
+              m_robotDrive.drive(x, y, rot, true);
+            },
             m_robotDrive));
 
 
@@ -99,20 +119,35 @@ public class RobotContainer {
      * Once you understand this, delete the above comments if you'd like. 
      */
 
+
+     //intakes fuel from ground and stores in hopper (check)
+m_OperatorController.L2().whileTrue
+      (m_shooterSubsystem.setVelocity(RPM.of(-267))
+      .alongWith(m_indexRollerSubsystem.set(0.8)));
+
+
     // Shoots the fuel - You can copy and paste the code below to set different buttons at different rpms. (Distances the shooter can shoot)
     m_OperatorController.R2()
-                        .whileTrue(m_shooterSubsystem.setVelocity(RPM.of(-4000))); // Double check whether pos or neg direction shoots.
+                        .whileTrue(m_shooterSubsystem.setVelocity(RPM.of(-4500)));
+    m_OperatorController.button(3)
+                        .whileTrue(m_shooterSubsystem.setVelocity(RPM.of(-1500)));
+    m_OperatorController.button(4)
+                        .whileTrue(m_shooterSubsystem.setVelocity(RPM.of(-1000)));                    
+                        
+                        // Double check whether pos or neg direction shoots.
                                                       // .alongWith(m_indexRollerSubsystem.set(-0.9)));
 
+                                                      
+
     // Reverse the direction of the shooter - This WILL send balls back down and will most likely get stuck! 
-    m_OperatorController.L2()
-                        .whileTrue(m_shooterSubsystem.setVelocity(RPM.of(120)));
+     m_OperatorController.L1()
+                         .whileTrue(m_shooterSubsystem.setVelocity(RPM.of(250)));
                                                       // .alongWith(m_indexRollerSubsystem.set(0.9)));
 
 
     // Test whether the positive or negative dutycycle rotates the index CW or CCW
-    m_OperatorController.button(1).whileTrue(m_indexRollerSubsystem.set(0.8)); // Positive Intake
-    m_OperatorController.button(2).whileTrue(m_indexRollerSubsystem.set(-0.8));         // Negative reverse
+    m_OperatorController.button(1).whileTrue(m_indexRollerSubsystem.set(0.9)); // Positive Intake
+    m_OperatorController.button(2).whileTrue(m_indexRollerSubsystem.set(-0.9));         // Negative reverse
 
                                                       
     // When using the climb, if for any reason the robot isn't strong enough, check IRL mechanism. Or increase dutycycle but not over 1

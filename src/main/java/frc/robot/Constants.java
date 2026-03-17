@@ -93,9 +93,9 @@ public final class Constants {
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-    public static final double kPXController = 0.3;
-    public static final double kPYController = 0.3;
-    public static final double kPThetaController = 0.3;
+    public static final double kPXController = 1;
+    public static final double kPYController = 1;
+    public static final double kPThetaController = 1;
 
     // Constraint for the motion profiled robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
@@ -116,10 +116,10 @@ public final class Constants {
         public static final DCMotor dcMotor = DCMotor.getNeoVortex(2);
         public static final int canIDMaster = 10;
         public static final int canIDFollower = 12;
-        public static final double kP = 40; // The actual value for P may be lower than 1
+        public static final double kP = 20; // The actual value for P may be lower than 1
         public static final double kI = 0;
         public static final double kD = 0;
-        public static final double kS = 1;
+        public static final double kS = 0;
         public static final double kV = 0;
         public static final double kA = 0;
         public static final double gearRatio = 12;
@@ -129,7 +129,7 @@ public final class Constants {
         public static final Current statorCurrentLimit = Amps.of(80);
         public static final Distance diameterWheel = Inches.of(4); // You can also use Centimeters.of(2.5) or something like that
         public static final Mass massWheel = Pounds.of(1);
-        public static final AngularVelocity softLimitLower = RPM.of(-3000);
+        public static final AngularVelocity softLimitLower = RPM.of(-7000);
         public static final AngularVelocity softLimitUpper = RPM.of(7000);
     }
 
