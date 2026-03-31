@@ -22,15 +22,15 @@ import yams.motorcontrollers.local.SparkWrapper;
 public class IndexRollerSubsystem extends SubsystemBase {
   // This is the subsystem (roller) that makes the plate inside the hopper bounce up and down. Idk the actual name for it.
   
-  private final SparkFlex cimMotor;
+  private final SparkFlex neoMotor;
   private SmartMotorControllerConfig smcConfig;
   private SmartMotorController smc;
   private final FlyWheelConfig rollerConfig;
   private FlyWheel roller;
 
   public IndexRollerSubsystem() {
-    cimMotor = new SparkFlex(IndexRollerConstants.canID, MotorType.kBrushed);
-
+    //cimMotor = new SparkFlex(IndexRollerConstants.canID, MotorType.kBrushed);
+    neoMotor = new SparkFlex(IndexRollerConstants.canID, MotorType.kBrushless);
     smcConfig = new SmartMotorControllerConfig(this)
     .withControlMode(ControlMode.OPEN_LOOP)
     .withTelemetry("HopperRollerMotor", TelemetryVerbosity.HIGH)
@@ -39,7 +39,7 @@ public class IndexRollerSubsystem extends SubsystemBase {
     .withStatorCurrentLimit(IndexRollerConstants.statorCurrentLimit)
     .withIdleMode(MotorMode.COAST);
 
-    smc = new SparkWrapper(cimMotor, IndexRollerConstants.dcMotor, smcConfig);
+    smc = new SparkWrapper(neoMotor, IndexRollerConstants.dcMotor, smcConfig);
 
     rollerConfig = new FlyWheelConfig(smc)
     .withTelemetry("HopperRoller", TelemetryVerbosity.HIGH);

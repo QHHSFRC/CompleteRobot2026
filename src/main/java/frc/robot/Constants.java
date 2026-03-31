@@ -123,8 +123,8 @@ public final class Constants {
         public static final double kV = 0;
         public static final double kA = 0;
         public static final double gearRatio = 12;
-        // Limits11
-        public static final AngularVelocity maxVelocityRPM = RPM.of(6000);
+        // Limits!!
+        public static final AngularVelocity maxVelocityRPM = RPM.of(6500);
         public static final AngularAcceleration maxAccelerationRPM = RotationsPerSecondPerSecond.of(5000);
         public static final Current statorCurrentLimit = Amps.of(80);
         public static final Distance diameterWheel = Inches.of(4); // You can also use Centimeters.of(2.5) or something like that
@@ -175,17 +175,17 @@ public final class Constants {
         // public static final double backfeedCommandDutyCycle = -0.4;
     }
 
-    public static class ShooterIntakeRollerConstants {
-        // public static final DCMotor dcMotor = DCMotor.getNeoVortex(1);
-        // public static final int canID = 6;
-        // public static final double gearRatio = 12;
-        // public static final boolean motorInverted = false;
+    public static class IntakeConstants {
+         public static final DCMotor dcMotor = DCMotor.getNeoVortex(1);
+         public static final int canID = 14;
+         public static final double gearRatio = 12;
+         public static final boolean motorInverted = false;
         // // Limits
-        // public static final Current statorCurrentLimit = Amps.of(40);
-        // public static final AngularVelocity softLimitLower = RPM.of(0);
-        // public static final AngularVelocity softLimitUpper = RPM.of(4000);
-        // public static final Distance diameterWheel = Inches.of(4);
-        // public static final Mass massWheel = Pounds.of(1);
+         public static final Current statorCurrentLimit = Amps.of(40);
+         public static final AngularVelocity softLimitLower = RPM.of(0);
+         public static final AngularVelocity softLimitUpper = RPM.of(4000);
+         public static final Distance diameterWheel = Inches.of(2);
+         public static final Mass massWheel = Pounds.of(1);
     }
 
     public static class ClimbSubsystemConstants {

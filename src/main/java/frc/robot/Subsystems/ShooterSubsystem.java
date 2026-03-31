@@ -8,6 +8,8 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -44,7 +46,7 @@ public class ShooterSubsystem extends SubsystemBase {
   // If you're using a sparkflex for the flywheel mechanism, use replace "SparkMax" with "SparkFlex" and import its dependency. Also, I'm assuming the shooter subsystem contains two motors
   private SparkFlex sparkMaster;
   private SparkFlex sparkFollower;
-
+private RelativeEncoder masterEncoder;
   private SmartMotorController sparkSmartMotorController;
 
   private final FlyWheelConfig shooterConfig;
@@ -55,8 +57,11 @@ public class ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem() {
 
     sparkMaster = new SparkFlex(ShooterSubsystemConstants.canIDMaster, MotorType.kBrushless);
+    masterEncoder = sparkMaster.getEncoder();
     sparkFollower = new SparkFlex(ShooterSubsystemConstants.canIDFollower, MotorType.kBrushless);
 
+
+    
     smcConfig = new SmartMotorControllerConfig(this)
   .withControlMode(ControlMode.CLOSED_LOOP)
   .withClosedLoopController(ShooterSubsystemConstants.kP, ShooterSubsystemConstants.kI, ShooterSubsystemConstants.kD, ShooterSubsystemConstants.maxVelocityRPM, ShooterSubsystemConstants.maxAccelerationRPM)
@@ -88,7 +93,13 @@ public class ShooterSubsystem extends SubsystemBase {
   public AngularVelocity getVelocity() {
     return shooter.getSpeed();
   }
+public double getEncoderPosition() {
+  return masterEncoder.getPosition();
+}
 
+public double getEncoderVelocityRaw() {
+  return masterEncoder.getVelocity();
+}
   public Command setVelocity(AngularVelocity speed) {
     return shooter.run(speed);
   }
@@ -105,11 +116,13 @@ public class ShooterSubsystem extends SubsystemBase {
     return shooter.set(0);
   }
 
-  @Override
-  public void periodic() {
-    shooter.updateTelemetry();
-  }
+@Override
+public void periodic() {
+  shooter.updateTelemetry();
 
+  SmartDashboard.putNumber("Shooter/EncoderPosition", getEncoderPosition());
+  SmartDashboard.putNumber("Shooter/EncoderVelocityRaw", getEncoderVelocityRaw());
+}
   @Override
   public void simulationPeriodic() {
     shooter.simIterate();
